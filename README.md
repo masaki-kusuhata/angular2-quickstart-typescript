@@ -12,6 +12,7 @@ cd angular2-quickstart
 ```bash
 npm init -y
 npm i angular2@2.0.0-alpha.44 --save --save-exact
+npm i systemjs typescript
 npm i live-server --save-dev
 ```
 
@@ -25,22 +26,16 @@ change package.json:
 }
 ```
 
-### make app.js
+### make app.ts
 
 ```javascript
-(function() {
-var AppComponent = ng
-  .Component({
+import {bootstrap, Component} from 'angular2/angular2';
+@Component({
     selector: 'my-app',
     template: '<h1>My First Angular 2 App</h1>'
-  })
-  .Class({
-    constructor: function () { }
-  });
-document.addEventListener('DOMContentLoaded', function() {
-  ng.bootstrap(AppComponent);
-});
-})();
+})
+class AppComponent { }
+bootstrap(AppComponent);
 ```
 
 ### make index.html
@@ -49,13 +44,22 @@ document.addEventListener('DOMContentLoaded', function() {
 <html>
   <head>
     <title>Angular 2 QuickStart</title>
-    <script src="node_modules/angular2/bundles/angular2.sfx.dev.js"></script>
-    <script src="app.js"></script>
+    <script src="node_modules/systemjs/dist/system.js"></script>
+    <script src="node_modules/typescript/lib/typescript.js"></script>
+    <script src="node_modules/angular2/bundles/angular2.dev.js"></script>
+    <script>
+      System.config({
+        transpiler: 'typescript',
+        typescriptOptions: { emitDecoratorMetadata: true }
+      });
+      System.import('./app.ts');
+    </script>
   </head>
   <body>
-    <my-app></my-app>
+    <my-app>loading...</my-app>
   </body>
 </html>
+
 ```
 
 ### run
